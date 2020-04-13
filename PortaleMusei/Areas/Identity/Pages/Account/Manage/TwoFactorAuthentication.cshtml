@@ -1,0 +1,57 @@
+﻿@page
+@model TwoFactorAuthenticationModel
+@{
+    ViewData["Title"] = "Autenticazione a due fattori (2FA)";
+    ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+<h4>@ViewData["Title"]</h4>
+@if (Model.Is2faEnabled)
+{
+    if (Model.RecoveryCodesLeft == 0)
+    {
+        <div class="alert alert-danger">
+            <strong>Non ti rimangono codici di recupero.</strong>
+            <p>Devi <a asp-page="./GenerateRecoveryCodes">generare un nuovo set di codici di recupero</a> prima di poter fare il login con un codice di recupero.</p>
+        </div>
+    }
+    else if (Model.RecoveryCodesLeft == 1)
+    {
+        <div class="alert alert-danger">
+            <strong>Ti rimane 1 codice di recupero.</strong>
+            <p>Puoi <a asp-page="./GenerateRecoveryCodes">generare un nuovo set di codici</a>.</p>
+        </div>
+    }
+    else if (Model.RecoveryCodesLeft <= 3)
+    {
+        <div class="alert alert-warning">
+            <strong>Ti rimangono @Model.RecoveryCodesLeft codici di recupero.</strong>
+            <p>Dovresti <a asp-page="./GenerateRecoveryCodes">generare un nuovo set di codici</a>.</p>
+        </div>
+    }
+
+    if (Model.IsMachineRemembered)
+    {
+        <form method="post" style="display: inline-block">
+            <button type="submit" class="btn btn-primary">Dimentica questo browser</button>
+        </form>
+    }
+    <a asp-page="./Disable2fa" class="btn btn-primary">Disabilita 2FA</a>
+    <a asp-page="./GenerateRecoveryCodes" class="btn btn-primary">Elimina i codici di recupero</a>
+}
+
+<h5>App di autenticazione</h5>
+@if (!Model.HasAuthenticator)
+{
+    <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-primary">Aggiungi app di autenticazione</a>
+}
+else
+{
+    <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-primary">Configura app di autenticazione</a>
+    <a id="reset-authenticator" asp-page="./ResetAuthenticator" class="btn btn-primary">Rimuovi app di autenticazione</a>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

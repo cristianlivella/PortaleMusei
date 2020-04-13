@@ -1,0 +1,37 @@
+﻿@page
+@using Models
+@model PortaleMusei.Pages.Users.IndexModel
+
+@{
+    ViewData["Title"] = "Gestione utenti";
+}
+
+<h1>Gestione utenti</h1>
+
+<div class="container">
+    <div class="row">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Ruolo</th>
+                    <th>Lockout</th>
+                    <th>Azioni</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (UserWithRole user in Model.Users)
+                {
+                    <tr>
+                        <td>@user.User.Email</td>
+                        <td>@(user.Role == null ? "utente" : (user.Role == "admin" ? "amministratore" : user.Role))</td>
+                        <td>@((user.User.LockoutEnd == null ? false : DateTime.Parse(user.User.LockoutEnd.ToString()) > DateTime.Now) ? "sì" : "no")</td>
+                        <td>
+                            <a asp-page="./Edit" asp-route-id="@user.User.Id" class="btn btn-sm btn-outline-primary @(user.User.Id == Model.CurrentUserId ? "disabled" : "")">Modifica</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

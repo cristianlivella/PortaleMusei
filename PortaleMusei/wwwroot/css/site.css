@@ -1,0 +1,127 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+.footer {
+    width: 100%;
+}
+.footer div {
+    margin-top: 18px;
+    margin-bottom: 18px;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+.btn-container {
+    display: inline-block;
+    margin: auto 2px;
+}
+
+@media only screen and (max-width: 767px) {
+    h1 {
+        text-align: center;
+    }
+    .footer {
+        text-align: center;
+    }
+    .col-md-6 .btn-container {
+        width: 49.2%;
+        margin: 0;
+        margin-top: 5px;
+    }
+    .col-md-6 .btn-container2 {
+        width: 100%;
+        margin: 0;
+        margin-top: 5px;
+    }
+    .col-md-6 .btn-container a, .col-md-6 .btn-container2 a {
+        width: 100%;
+    }
+    .col-md-6 .btn-container2 a {
+        margin-top: -15px;
+        margin-bottom: 10px;
+    }
+    .action-container {
+        display: initial !important;
+    }
+    .action-container .input-group {
+        width: 100%;
+    }
+}
+
+body, wrapper {
+    min-height: 100vh;
+}
+
+.shadow {
+    -webkit-box-shadow: 3px 3px 5px 6px #ccc; /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+    -moz-box-shadow: 3px 3px 5px 6px #ccc; /* Firefox 3.5 - 3.6 */
+    box-shadow: 3px 3px 5px 6px #ccc; /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+}
+
+@media only screen and (max-width: 991px) {
+    .d-flex.card-btn {
+        display: initial !important;
+        text-align: center;
+        line-height: 2.3;
+    }
+}
+
+

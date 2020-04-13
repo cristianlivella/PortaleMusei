@@ -1,0 +1,75 @@
+﻿@page
+@using  Models
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="container">
+        <div id="carousel" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#carousel" data-slide-to="0" class="active"></li>
+                <li data-target="#carousel" data-slide-to="1"></li>
+                <li data-target="#carousel" data-slide-to="2"></li>
+            </ol>
+            <div class="carousel-inner">
+                @{bool first = true;}
+                @foreach (Museum museum in @Model.CarouselMuseums)
+                {
+                    <div class="carousel-item @(first ? "active" : "")">
+                        <img src="@(museum.Picture != null && museum.Picture.Length>0 ? @museum.Picture : "../img/no-image.jpg")" alt="@museum.Name">
+                        <div class="container">
+                            <div class="carousel-caption">
+                                <h1 style="background-color: rgba(0, 0, 0, 0.8); padding: 10px; display: inline-flex">@museum.Name</h1>
+                                <p><span style="background-color: rgba(0, 0, 0, 0.8); padding: 8px;">@museum.Region.Name - @museum.City</span></p>
+                                <p><a class="btn btn-lg btn-primary" asp-page="./Museums/Details" asp-route-id="@museum.Id" role="button">Dettagli</a></p>
+                            </div>
+                        </div>
+                    </div>
+                    first = false;
+                }
+            </div>
+            <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+}
+else
+{
+    <div class="container" style="text-align: center;">
+        <h3>Effettua il login per accedere ai contenuti del sito!</h3>
+        <hr />
+    </div>
+}
+
+
+<div class="container">
+    <h2>@Model.NewsHeader</h2>
+    <div class="row">
+        @foreach (News news in @Model.NewsToShow)
+        {
+            <div class="col-md-4 d-flex align-items-stretch">
+                <div class="card mb-4 box-shadow" style="width: 100%;">
+                    <img class="card-img-top" src="@(news.Picture.Length>0 ? @news.Picture : "../img/no-image.jpg")" style="height: 180px; object-fit: cover;" />
+                    <div class="card-body d-flex flex-column">
+                        <p class="card-text"><b>@news.Title</b></p>
+                        <p class="card-text">@news.Description</p>
+                        <div class="d-flex justify-content-between align-items-center mt-auto">
+                            <a href="@news.Url" target="_blank" class="btn btn-sm btn-outline-primary">Leggi la notizia</a>
+                            <small class="text-muted">@DateTimeOffset.FromUnixTimeSeconds(news.Timestamp).DateTime.ToLocalTime()</small>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,47 @@
+﻿@page
+@model PortaleMusei.Pages.Users.EditModel
+
+@{
+    ViewData["Title"] = "Modifica utente";
+}
+
+<h1>Modifica utente</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="EditingUser.User.Id" />
+            <div class="form-group">
+                <label class="control-label">Email</label>
+                <input class="form-control" value="@Model.EditingUser.User.Email" readonly />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Ruolo</label>
+                <select name="role" asp-for="EditingUser.Role" class="form-control">
+                    <option value="user">Utente</option>
+                    <option value="staff">Staff</option>
+                    <option value="admin">Amministratore</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Lockout</label>
+                <select name="lockout" asp-for="LockedOut" class="form-control">
+                    <option value="false">No</option>
+                    <option value="true">Sì</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Salva" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Torna alla lista</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

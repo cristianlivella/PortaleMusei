@@ -1,0 +1,77 @@
+﻿@using Microsoft.AspNetCore.Http
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PortaleMusei</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/carousell.css" />
+</head>
+<body>
+    <wrapper class="d-flex flex-column">
+        <header>
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+                <div class="container">
+                    <a class="navbar-brand" asp-area="" asp-page="/Index">Musei</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                        <partial name="_LoginPartial" />
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                            </li>
+                            @if (Context.User.Identity.IsAuthenticated)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-page="/Museums/Index">Musei</a>
+                                </li>
+                            }
+                            @if (Context.User.Identity.IsAuthenticated && Context.User.IsInRole("admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-page="/Users/Index">Gestione utenti</a>
+                                </li>
+                            }
+
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <main class="container flex-fill">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </main>
+
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                @{
+                    var PageViews = Context.Session.GetInt32(Context.Request.Path.ToString().ToLower() + (Context.Request.QueryString.ToString().ToLower().Contains("id=") ? @Context.Request.QueryString.ToString() : "")).GetValueOrDefault(0) + 1;
+                    Context.Session.SetInt32(Context.Request.Path.ToString().ToLower() + (Context.Request.QueryString.ToString().ToLower().Contains("id=") ? @Context.Request.QueryString.ToString() : ""), PageViews);
+                    var TotalViews = Context.Session.GetInt32("TotalViews").GetValueOrDefault(0) + 1;
+                    Context.Session.SetInt32("TotalViews", TotalViews);
+                }
+                Durante questa sessione hai visitato <b>@PageViews</b> volt@(PageViews == 1 ? "a" : "e") questa pagina e <b>@TotalViews</b> volt@(TotalViews == 1 ? "a" : "e") le pagine di queto sito.
+            </div>
+            <div class="border-top" style="margin-bottom: -1px"></div>
+            <div class="container">
+                &copy; 2020 - Cristian Livella - <a href="https://github.com/cristianlivella/PortaleMusei" target="_blank">PortaleMusei</a>
+            </div>
+        </footer>
+    </wrapper>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

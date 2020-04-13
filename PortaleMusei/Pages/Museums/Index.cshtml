@@ -1,0 +1,111 @@
+﻿@page
+@using Models
+@model PortaleMusei.Pages.Museums.IndexModel
+
+@{
+    ViewData["Title"] = "Musei";
+}
+
+<div class="row">
+    <h1 class="col-md-6" style="margin: 10px 0;">Musei</h1>
+    <div class="col-md-6 action-container" style="display: flex; text-align: right; margin: auto">
+        <form class="input-group" style="text-align: right; margin: auto 4px;">
+            <input type="text" value="@Model.SearchQuery" class="form-control" placeholder="cerca" name="q" />
+            <button type="submit" class="bnt btn-secondary" style="color: white; width: 40px; padding-right: 6px; padding-top: 5px;"><i class="fa fa-search fa-lg" aria-hidden="true"></i></button>
+        </form>
+        <div class="btn-container"><a asp-page="./Index" asp-route-grid="1" asp-route-p="@Model.CurrentPage" asp-route-q="@Model.SearchQuery" class="btn @(Model.GridView ? "btn-primary" : "btn-outline-primary")">Griglia</a></div>
+        <div class="btn-container"><a asp-page="./Index" asp-route-grid="0" asp-route-p="@Model.CurrentPage" asp-route-q="@Model.SearchQuery" class="btn @(!Model.GridView ? "btn-primary" : "btn-outline-primary")">Elenco</a></div>
+    </div>
+    <p class="col-md-6"><b>@Model.TotalMuseums</b> element@(@Model.TotalMuseums == 1 ? "o" : "i") trovat@(@Model.TotalMuseums == 1 ? "o" : "i") - sono visualizzati i risultati da <b>@((Model.TotalMuseums == 0 ? 0 : (Model.CurrentPage - 1) * 30 + 1))</b> a <b>@Math.Min(Model.CurrentPage * 30, Model.TotalMuseums)</b></p>
+    @if (User.Identity.IsAuthenticated && (User.IsInRole("admin") || User.IsInRole("staff")))
+    {
+        <div class="col-md-6 action-container" style="text-align: right; margin: auto">
+            <div class="btn-container2"><a asp-page="./Create" class="btn btn-success" style="margin-top: -20px;">Aggiungi museo</a></div>
+        </div>
+    }
+</div>
+
+
+<div class="container">
+    <div class="row">
+        @if (Model.GridView)
+        {
+            foreach (Museum museum in Model.Museums)
+            {
+                <div class="col-md-4 d-flex align-items-stretch">
+                    <div class="card mb-4 box-shadow" style="width: 100%;">
+                        <img class="card-img-top" src="@(museum.Picture != null && museum.Picture.Length>0 ? @museum.Picture : "../img/no-image.jpg")" style="height: 180px; object-fit: cover;" />
+                        <div class="card-body d-flex flex-column">
+                            <p class="card-text"><b>@museum.Name</b></p>
+                            <div class="mt-auto">
+                                <p class="card-text" style="margin-bottom: 1.5rem;">@museum.Region.Name - @museum.City</p>
+                                <div class="mt-auto @(1==1 ? "d-flex card-btn justify-content-between align-items-center" : "")">
+                                    <a asp-page="./Details" asp-route-id="@museum.Id" class="btn btn-sm btn-outline-primary">Dettagli</a>
+                                    @if (User.Identity.IsAuthenticated && (User.IsInRole("admin") || User.IsInRole("staff")))
+                                    {
+                                        <a asp-page="./Edit" asp-route-id="@museum.Id" class="btn btn-sm btn-outline-secondary">Modifica</a>
+                                        <a asp-page="./Delete" asp-route-id="@museum.Id" class="btn btn-sm btn-outline-danger">Elimina</a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Regione</th>
+                        <th>Città</th>
+                        <th>Azioni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (Museum museum in Model.Museums)
+                    {
+                        <tr>
+                            <td>@museum.Name</td>
+                            <td>@museum.Region.Name</td>
+                            <td>@museum.City</td>
+                            <td>
+                                <a asp-page="./Details" asp-route-id="@museum.Id" class="btn btn-sm btn-outline-primary">Dettagli</a>
+                                @if (User.Identity.IsAuthenticated && (User.IsInRole("admin") || User.IsInRole("staff")))
+                                {
+                                    <a asp-page="./Edit" asp-route-id="@museum.Id" class="btn btn-sm btn-outline-secondary">Modifica</a>
+                                    <a asp-page="./Delete" asp-route-id="@museum.Id" class="btn btn-sm btn-outline-danger">Elimina</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+    </div>
+    @if (Model.TotalMuseums > 30)
+    {
+        <nav>
+            <ul class="pagination justify-content-center">
+                @if (Model.CurrentPage - 1 > 2)
+                {
+                    <li class="page-item"><a class="page-link" asp-page="./Index" asp-route-p="1" asp-route-q="@Model.SearchQuery">1</a></li>
+                }
+                @for (int x = -2; x < 3; x++)
+                {
+                    if (Model.CurrentPage + x > 0 && Model.CurrentPage + x <= Model.TotalMuseums / 30 + (Model.TotalMuseums % 30 > 0 ? 1 : 0))
+                    {
+                        <li class="page-item @(x==0 ? "active" : "")"><a class="page-link" asp-page="./Index" asp-route-p="@(Model.CurrentPage + x)" asp-route-q="@Model.SearchQuery">@(Model.CurrentPage + x)</a></li>
+                    }
+                }
+                @if (Model.TotalMuseums / 30 + (Model.TotalMuseums % 30 > 0 ? 1 : 0) - Model.CurrentPage > 2)
+                {
+                    <li class="page-item"><a class="page-link" asp-page="./Index" asp-route-p="@(Model.TotalMuseums / 30 + (Model.TotalMuseums % 30 > 0 ? 1 : 0))" asp-route-q="@Model.SearchQuery">@(Model.TotalMuseums / 30 + (Model.TotalMuseums % 30 > 0 ? 1 : 0))</a></li>
+                }
+            </ul>
+        </nav>
+    }
+</div>

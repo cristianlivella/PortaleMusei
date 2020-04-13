@@ -1,0 +1,66 @@
+﻿@page
+@model PortaleMusei.Pages.Museums.EditModel
+
+@{
+    ViewData["Title"] = "Modifica";
+}
+
+<h1>Modifica museo</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Museum.Id" />
+            <div class="form-group">
+                <label asp-for="Museum.Name" class="control-label">Nome</label>
+                <input asp-for="Museum.Name" class="form-control" />
+                <span asp-validation-for="Museum.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Museum.Region" class="control-label">Regione</label>
+                <select asp-for="SelectedRegionId" asp-items="@(new SelectList(Model.Regions, "Id", "Name"))" class="form-control"></select>
+                <span asp-validation-for="Museum.Region" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Museum.City" class="control-label">Città</label>
+                <input asp-for="Museum.City" class="form-control" />
+                <span asp-validation-for="Museum.City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Museum.Address" class="control-label">Indirizzo</label>
+                <input asp-for="Museum.Address" class="form-control" />
+                <span asp-validation-for="Museum.Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Museum.Website" class="control-label">Sito web</label>
+                <input asp-for="Museum.Website" class="form-control" />
+                <span asp-validation-for="Museum.Website" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Museum.Picture" class="control-label">Immagine</label>
+                <input asp-for="Museum.Picture" class="form-control" onchange="document.getElementById('img').src = this.value"/>
+                <span asp-validation-for="Museum.Picture" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Museum.Map" class="control-label">Mappa</label>
+                <input asp-for="Museum.Map" class="form-control" />
+                <span asp-validation-for="Museum.Map" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Salva" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+    <div class="col-md-8" style="padding: 10px 40px;">
+        <img id="img" src="@((Model.Museum.Picture != null && Model.Museum.Picture.Length>0) ? Model.Museum.Picture : "../../img/no-image.jpg")" class="shadow" style="width: 100%; max-height:600px; object-fit: cover;" />
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Torna alla lista</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
