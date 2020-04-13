@@ -11,22 +11,22 @@ Made during school year 2019/2020 at [ITIS Paleocapa](https://itispaleocapa.edu.
 
 ## Screenshots
 ![Homepage](Screenshots/01.png)
-*Homepage with museums carousel and news.*
+*Homepage with museums carousel and news*
 ***
 ![Museums cards](Screenshots/02.png)
-*Museums cards.*
+*Museums cards*
 ***
 ![Museums list](Screenshots/03.png)
-*Museums list.*
+*Museums list*
 ***
 ![Edit museum](Screenshots/04.png)
-*Edit museum.*
+*Edit museum*
 ***
 ![Delete museum](Screenshots/05.png)
-*Delete museum.*
+*Delete museum*
 ***
 ![Users list](Screenshots/06.png)
-*User list.*
+*User list*
 ***
 ![Edit user](Screenshots/07.png)
-*Edit user.*
+*Edit user*
